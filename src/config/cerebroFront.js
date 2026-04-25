@@ -33,7 +33,7 @@ export const cerebroFront = {
       info: "#5C9EFF",
       fondoAlt: "#0d0d0d",
       textoInverso: "#121212",
-      bordeSuave: "#E0E0E030",
+      bordeSuave: "#c0c0c030",
       sombraCaja: "0 8px 20px rgba(0,0,0,0.5)",
     },
     activo: "oscuro", // Cambiar a "claro" o "oscuro" para cambiar todo el sistema
@@ -89,11 +89,26 @@ export const cerebroFront = {
       facturacionMensual: true,
     },
   },
+  // Tabla de precios de compra de tokens (materia prima)
+  // A mayor cantidad de tokens, menor precio por unidad
+  tablaPreciosTokens: [
+    { desde: 1, hasta: 50, precioUnitarioARS: 100 }, // 1-50 tokens: AR$ 100 c/u
+    { desde: 51, hasta: 100, precioUnitarioARS: 85 }, // 51-100 tokens: AR$ 85 c/u
+    { desde: 101, hasta: 500, precioUnitarioARS: 70 }, // 101-500 tokens: AR$ 70 c/u
+    { desde: 501, hasta: 1000, precioUnitarioARS: 55 }, // 501-1000 tokens: AR$ 55 c/u
+    { desde: 1001, hasta: 2000, precioUnitarioARS: 42 }, // 1001-2000 tokens: AR$ 42 c/u
+    { desde: 2001, hasta: 5000, precioUnitarioARS: 31 }, // 2001-5000 tokens: AR$ 31 c/u
+    { desde: 5001, hasta: 10000, precioUnitarioARS: 21 }, // 5001-10000 tokens: AR$ 21 c/u
+    { desde: 10001, hasta: 20000, precioUnitarioARS: 15 }, // 10001-20000 tokens: AR$ 15 c/u
+  ],
+
+  // Los paquetes de tokens ahora se calculan dinámicamente según la tabla anterior
+  // Mantenemos esta sección para compatibilidad con el componente Planes
   paquetesTokens: [
-    { cantidad: 100, precio: 5, descuento: 0 },
-    { cantidad: 500, precio: 22.5, descuento: 10 },
-    { cantidad: 1000, precio: 40, descuento: 20 },
-    { cantidad: 5000, precio: 175, descuento: 30 },
+    { cantidad: 100, descripcion: "100 tokens", descuento: 0 },
+    { cantidad: 500, descripcion: "500 tokens", descuento: 10 },
+    { cantidad: 1000, descripcion: "1000 tokens", descuento: 20 },
+    { cantidad: 5000, descripcion: "5000 tokens", descuento: 30 },
   ],
   equivalencias: {
     tokenAPesos: 5000,
@@ -211,27 +226,27 @@ export const cerebroFront = {
       pasos: [
         {
           numero: "01",
-          titulo: "Elige tu tipo de cuenta",
+          titulo: "Crea tu cuenta unificada",
           descripcion:
-            "Selecciona entre Developer, Tester o Empresa según tu perfil y necesidades.",
+            "Regístrate con tu nombre de usuario y DNI. Una sola cuenta te da acceso a los modos Developer y Tester, que podrás alternar desde tu panel sin necesidad de registrarte dos veces.",
         },
         {
           numero: "02",
           titulo: "Completa tu perfil",
           descripcion:
-            "Verifica tu email, añade tu información y, si eres Tester, tu DNI.",
+            "Añade tus datos personales y verifica tu correo electrónico. Tu DNI será obligatorio para las validaciones avanzadas de identidad en el modo Tester.",
         },
         {
           numero: "03",
           titulo: "Obtén tus credenciales",
           descripcion:
-            "Genera tu Public Key y Secret Key para empezar a integrar PaySim en tu aplicación.",
+            "En modo Developer, crea una aplicación y recibe automáticamente una Public Key y una Secret Key. Estas credenciales te permitirán integrar PaySim en tu proyecto.",
         },
         {
           numero: "04",
           titulo: "Simula sin límites",
           descripcion:
-            "Crea aplicaciones, tarjetas virtuales y prueba todos los flujos de pago.",
+            "Crea tarjetas virtuales, carga saldo, asigna límites y simula todos los flujos de pago. Cambia al modo Tester cuando necesites probar manualmente.",
         },
       ],
     },
@@ -244,7 +259,7 @@ export const cerebroFront = {
       switchAnual: "Anual (2 meses gratis)",
       caracteristicas: {
         tokensExtra: "Compra de tokens extra",
-        paquetesEmpleados: "Paquetes de empleados extra",
+        paquetesEmpleados: "Paquetes de empleados",
         tokensAcumulables: "Tokens acumulables",
         soporteEmail: "Soporte por email",
       },
@@ -454,13 +469,15 @@ export const cerebroFront = {
     },
     estadoServicio: {
       titulo: "Estado del Servicio",
-      subtitulo: "Todos los sistemas funcionan correctamente.",
+      verificando: "Verificando estado del servicio...",
       operativo: "Operativo",
-      rendimiento: "Rendimiento óptimo",
-      ultimaRevision: "Última revisión: 23 de abril de 2026, 10:00 AM (ART)",
-      incidentesRecientes:
-        "No se han registrado incidentes en los últimos 30 días.",
-      mantenimientoProgramado: "Próximo mantenimiento programado: No agendado.",
+      degradado: "Degradado",
+      noDisponible: "No Disponible",
+      descripcionOperativo: "Todos los sistemas funcionan correctamente.",
+      descripcionDegradado: "Algunos servicios presentan latencia elevada.",
+      descripcionNoDisponible: "El servicio no responde en este momento.",
+      errorVerificacion:
+        "No se pudo verificar el estado del servicio. Intente nuevamente más tarde.",
     },
     politicaPrivacidad: {
       titulo: "Política de Privacidad",
@@ -1229,6 +1246,33 @@ export const cerebroFront = {
         // ...muchas secciones más...
       ],
     },
+    pagoConsumo: {
+      titulo: "Pago por Consumo",
+      descripcion:
+        "Con el plan de Pago por Consumo no pagas una suscripción fija. Solo pagas por los tokens que realmente usas, sin límites mensuales. El precio de cada token varía según la cantidad que compres: a mayor volumen, menor precio.",
+      comoFunciona: "Cómo funciona",
+      paso1:
+        "1. Validás tu tarjeta de crédito/débito real. Realizamos un cobro simbólico de $1 que se reintegra automáticamente.",
+      paso2:
+        "2. Consumís tokens libremente: crear aplicaciones, tarjetas, cargar saldo. Cada acción descuenta tokens de tu billetera.",
+      paso3:
+        "3. El último día hábil del mes generamos un resumen con todos los consumos, convertidos a tokens.",
+      paso4:
+        "4. El primer día hábil del mes siguiente se realiza el cobro automático a tu tarjeta validada, aplicando el precio según la tabla de valores vigente.",
+      aviso:
+        "Podés configurar un límite de consumo mensual para recibir una alerta cuando te acerques a ese monto y evitar sorpresas.",
+      renovacion:
+        "El cobro de los tokens consumidos durante el mes se realiza de forma automática el primer día hábil del mes siguiente, utilizando la tarjeta tokenizada al momento de la activación del plan. No se aceptan pagos manuales para garantizar la continuidad del servicio.",
+      tokens:
+        "Tus tokens no vencen. Si no consumís todos los tokens en un mes, se acumulan para el siguiente.",
+      equivalencia:
+        "IMPORTANTE: No confundir precio de compra con valor de uso. 1 token comprado te permite simular AR$ 5.000 dentro de la plataforma. El precio que pagas por cada token depende de la tabla de precios según volumen.",
+      tablaPrecios: "Tabla de precios de tokens (en ARS por unidad)",
+      columnaCantidad: "Cantidad",
+      columnaPrecio: "Precio unitario (ARS)",
+      columnaEjemplo: "Ejemplo de compra",
+      botonCerrar: "Entendido",
+    },
   },
 
   // ==========================================
@@ -1468,11 +1512,11 @@ export const cerebroFront = {
       headerTextAlign: "center",
       headerMarginBottom: "4rem",
       // Título
-      titleFontSize: "clamp(2rem, 5vw, 3rem)",
+      titleFontSize: "clamp(1.5rem, 4vw, 2rem)",
       titleFontWeight: "bold",
       titleMarginBottom: "1rem",
       // Subtítulo
-      subtitleFontSize: "1.2rem",
+      subtitleFontSize: "1rem",
       subtitleMaxWidth: "700px",
       subtitleMargin: "0 auto",
       subtitleOpacity: 0.8,
@@ -1525,7 +1569,7 @@ export const cerebroFront = {
       containerMaxWidth: "1200px",
       containerMargin: "0 auto",
       // Título
-      titleFontSize: "clamp(2rem, 5vw, 3rem)",
+      titleFontSize: "clamp(1.5rem, 4vw, 2rem)",
       titleFontWeight: "bold",
       titleTextAlign: "center",
       titleMarginBottom: "4rem",
@@ -1554,16 +1598,16 @@ export const cerebroFront = {
       circleDisplay: "flex",
       circleAlignItems: "center",
       circleJustifyContent: "center",
-      circleFontSize: "1.8rem",
+      circleFontSize: "1.4rem",
       circleFontWeight: "bold",
       circleBoxShadowSpread: "8px",
       circleFlexShrink: 0,
       // Contenido del paso
       stepContentFlex: 1,
       stepContentPaddingTop: "0.5rem",
-      stepTitleFontSize: "1.8rem",
+      stepTitleFontSize: "1.3rem",
       stepTitleMarginBottom: "0.5rem",
-      stepDescFontSize: "1.1rem",
+      stepDescFontSize: "0.9rem",
       stepDescLineHeight: 1.7,
       stepDescOpacity: 0.85,
       // Animaciones
@@ -1626,7 +1670,10 @@ export const cerebroFront = {
       cardBorderLeft: "1px solid",
       cardBorderRight: "1px solid",
       cardTransition: "all 0.3s",
+      borderWidth: "1px",
       cardFlex: "1 1 0",
+      cardBorderColorDefault: "rgba(0,0,0,0.15)",
+      cardBorderColorPro: "temaActivo.primario",
       cardMinWidth: "200px",
       cardMaxWidth: "260px",
       // Etiqueta popular
@@ -1726,7 +1773,7 @@ export const cerebroFront = {
       pestanasContainerFlexWrap: "wrap",
       // Botón de pestaña
       pestanaPadding: "1rem 2.5rem",
-      pestanaFontSize: "1.2rem",
+      pestanaFontSize: "1rem",
       pestanaFontWeight: "bold",
       pestanaBorderRadius: "50px",
       pestanaBorderWidth: "2px",
@@ -1734,6 +1781,10 @@ export const cerebroFront = {
       pestanaMinWidth: "160px",
       pestanaCursor: "pointer",
       pestanaBoxShadow: "none",
+      pestanaBorderOpacityInactiva: 0.6,
+      pestanaAppearance: "none",
+      pestanaWebkitAppearance: "none",
+      pestanaOutline: "none",
       pestanaBackgroundTransparent: "transparent",
       // Contenido (panel)
       contentPadding: "3rem",
@@ -1750,12 +1801,12 @@ export const cerebroFront = {
       contentExitOpacity: 0,
       contentTransitionDuration: 0.4,
       // Descripción
-      descripcionFontSize: "1.2rem",
+      descripcionFontSize: "0.9rem",
       descripcionLineHeight: 1.8,
       descripcionMarginBottom: "2.5rem",
       descripcionTextAlign: "left",
       // Título características
-      caracteristicasTitleFontSize: "1.8rem",
+      caracteristicasTitleFontSize: "1.3rem",
       caracteristicasTitleMarginBottom: "1.5rem",
       caracteristicasTitleTextAlign: "left",
       // Lista
@@ -1784,6 +1835,9 @@ export const cerebroFront = {
       itemMargin: 0,
       itemPadding: 0,
       itemTextAlign: "left",
+      pestanaAppearance: "none",
+      pestanaMozAppearance: "none",
+      pestanaWebkitAppearance: "none",
     },
     // --- TESTIMONIOS ---
     testimonios: {
@@ -1791,7 +1845,7 @@ export const cerebroFront = {
       minHeight: "100vh",
       padding: "6rem 2rem",
       // Título
-      titleFontSize: "clamp(2rem, 5vw, 3rem)",
+      titleFontSize: "clamp(1.5rem, 4vw, 2rem)",
       titleFontWeight: "bold",
       titleTextAlign: "center",
       titleMarginBottom: "1rem",
@@ -1865,7 +1919,7 @@ export const cerebroFront = {
       titleTextAlign: "center",
       titleMarginBottom: "1rem",
       // Subtítulo
-      subtitleFontSize: "1.2rem",
+      subtitleFontSize: "1rem",
       subtitleMaxWidth: "600px",
       subtitleMargin: "0 auto 3rem",
       subtitleOpacity: 0.8,
@@ -1878,7 +1932,7 @@ export const cerebroFront = {
       accordionOverflow: "hidden",
       // Pregunta (botón)
       questionPadding: "1.5rem 2rem",
-      questionFontSize: "1.2rem",
+      questionFontSize: "1rem",
       questionFontWeight: "600",
       questionBackground: "temaActivo.fondo", // se asigna inline
       questionCursor: "pointer",
@@ -1892,11 +1946,13 @@ export const cerebroFront = {
       // Icono flecha
       iconFontSize: "1.5rem",
       iconTransition: "transform 0.3s",
+      iconFlexShrink: 0,
+      iconMinWidth: "1.5rem",
       iconTransformOpen: "rotate(180deg)",
       iconTransformClosed: "rotate(0deg)",
       // Respuesta
       answerPadding: "1.5rem 2rem",
-      answerFontSize: "1.1rem",
+      answerFontSize: "0.9rem",
       answerLineHeight: 1.8,
       answerOpacity: 0.9,
       answerTextAlign: "left",
@@ -1931,7 +1987,7 @@ export const cerebroFront = {
       containerMaxWidth: "1200px",
       containerMargin: "0 auto",
       columnasDisplay: "grid",
-      columnasGridTemplateColumns: "repeat(4, 1fr)",
+      columnasGridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
       columnasGap: "2rem",
       columnaTituloFontSize: "1.3rem",
       columnaTituloFontWeight: "bold",
@@ -2119,6 +2175,11 @@ export const cerebroFront = {
       tooltipTransition: "all 0.3s ease",
       tooltipOpacityHidden: 0,
       tooltipOpacityVisible: 1,
+    },
+    // --- PAGO POR CONSUMO ---
+    pagoConsumo: {
+      textAlign: "left",
+      fontSize: "0.9rem",
     },
     // --- AYUDA (dentro de modal) ---
     ayuda: {

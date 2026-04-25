@@ -3,10 +3,13 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { FaCheck } from "react-icons/fa";
 import { cerebroFront, getTemaActivo } from "../config/cerebroFront";
+import ModalBase from "./ModalBase";
+import PagoConsumo from "./PagoConsumo";
 
 const Planes = () => {
   const temaActivo = getTemaActivo();
   const [periodo, setPeriodo] = useState("mensual");
+  const [modalPagoConsumo, setModalPagoConsumo] = useState(false);
   const planesData = cerebroFront.planes;
   const estilos = cerebroFront.estilos.planes;
   const textosPlanes = cerebroFront.textos.planes;
@@ -171,10 +174,7 @@ const Planes = () => {
                   padding: estilos.cardPadding,
                   borderRadius: estilos.cardBorderRadius,
                   boxShadow: estilos.cardBoxShadow,
-                  borderTop: `${estilos.cardBorderTop} ${planKey === "pro" ? temaActivo.primario : temaActivo.texto + "30"}`,
-                  borderBottom: `${estilos.cardBorderBottom} ${planKey === "pro" ? temaActivo.primario : temaActivo.texto + "30"}`,
-                  borderLeft: estilos.cardBorderLeft,
-                  borderRight: estilos.cardBorderRight,
+                  border: `${estilos.borderWidth} solid ${planKey === "pro" ? temaActivo.primario : temaActivo.bordeSuave}`,
                   position: estilos.cardPosition,
                   transition: estilos.cardTransition,
                   flex: estilos.cardFlex,
@@ -400,21 +400,34 @@ const Planes = () => {
             {textosPlanes.preguntaConsumo}
           </p>
           <button
+            onClick={() => setModalPagoConsumo(true)}
             style={{
-              padding: estilos.consumoButtonPadding,
-              borderRadius: estilos.consumoButtonBorderRadius,
-              border: estilos.consumoButtonBorder,
-              backgroundColor: estilos.consumoButtonBackground,
+              padding: "0.8rem 2rem",
+              borderRadius: "30px",
+              border: "none",
+              backgroundColor: "transparent",
               color: temaActivo.primario,
-              fontWeight: estilos.consumoButtonFontWeight,
-              textDecoration: estilos.consumoButtonTextDecoration,
-              cursor: estilos.consumoButtonCursor,
+              fontWeight: "bold",
+              textDecoration: "underline",
+              cursor: "pointer",
             }}
           >
             {botones.conocePagoConsumo}
           </button>
         </motion.div>
       </div>
+      {modalPagoConsumo && (
+        <ModalBase
+          isOpen={modalPagoConsumo}
+          onClose={() => setModalPagoConsumo(false)}
+          titulo={planesData.payAsYouGo.nombre}
+        >
+          <PagoConsumo
+            onClose={() => setModalPagoConsumo(false)}
+            onSelectPlan={() => setModalPagoConsumo(false)}
+          />
+        </ModalBase>
+      )}
     </section>
   );
 };

@@ -18,7 +18,6 @@ const InfoModos = () => {
 
   const contenidoActivo = textos[modoActivo];
 
-  // Función helper para convertir opacidad a hexadecimal
   const opacidadToHex = (opacidad) =>
     Math.round(opacidad * 255)
       .toString(16)
@@ -95,7 +94,7 @@ const InfoModos = () => {
             const isActive = modoActivo === pestana.id;
             const borderColor = isActive
               ? temaActivo.primario
-              : temaActivo.texto +
+              : temaActivo.primario +
                 opacidadToHex(estilos.pestanaBorderOpacityInactiva);
 
             return (
@@ -103,6 +102,7 @@ const InfoModos = () => {
                 key={pestana.id}
                 onClick={() => setModoActivo(pestana.id)}
                 style={{
+                  all: "unset",
                   padding: estilos.pestanaPadding,
                   fontSize: estilos.pestanaFontSize,
                   fontWeight: estilos.pestanaFontWeight,
@@ -113,10 +113,12 @@ const InfoModos = () => {
                     : estilos.pestanaBackgroundTransparent,
                   color: isActive ? temaActivo.textoInverso : temaActivo.texto,
                   cursor: estilos.pestanaCursor,
-                  transition: estilos.pestanaTransition,
-                  boxShadow: estilos.pestanaBoxShadow,
-
+                  boxShadow: "none",
+                  outline: "none",
                   minWidth: estilos.pestanaMinWidth,
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
               >
                 {pestana.label}

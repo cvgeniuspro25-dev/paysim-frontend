@@ -23,9 +23,28 @@ const Footer = () => {
   const [modalActivo, setModalActivo] = useState(null);
 
   const [busquedaAyuda, setBusquedaAyuda] = useState("");
+  const [estadoServicio, setEstadoServicio] = useState(null);
+  const [errorServicio, setErrorServicio] = useState(false);
 
   const abrirModal = (modal) => {
     setModalActivo(modal);
+    if (modal === "estadoServicio") {
+      setEstadoServicio(null);
+      setErrorServicio(false);
+      fetch(`${cerebroFront.urls.backendProduccion}/api/health`)
+        .then((res) => {
+          if (res.ok) return res.json();
+          throw new Error("No ok");
+        })
+        .then((data) => {
+          setEstadoServicio(data);
+          setErrorServicio(false);
+        })
+        .catch(() => {
+          setEstadoServicio(null);
+          setErrorServicio(true);
+        });
+    }
   };
   const cerrarModal = () => setModalActivo(null);
 
@@ -233,17 +252,52 @@ const Footer = () => {
         );
 
       case "estadoServicio":
+        if (errorServicio) {
+          return (
+            <div style={{ textAlign: estilosModal.bodyTextAlign }}>
+              <p style={{ color: temaGlobal.error }}>
+                {cerebroFront.textos.estadoServicio.errorVerificacion}
+              </p>
+            </div>
+          );
+        }
+        if (!estadoServicio) {
+          return (
+            <div style={{ textAlign: estilosModal.bodyTextAlign }}>
+              <p>{cerebroFront.textos.estadoServicio.verificando}</p>
+            </div>
+          );
+        }
+        const statusColor =
+          estadoServicio.status === "success"
+            ? temaGlobal.exito
+            : temaGlobal.error;
+        const statusText =
+          estadoServicio.status === "success"
+            ? cerebroFront.textos.estadoServicio.operativo
+            : cerebroFront.textos.estadoServicio.noDisponible;
+        const statusDesc =
+          estadoServicio.status === "success"
+            ? cerebroFront.textos.estadoServicio.descripcionOperativo
+            : cerebroFront.textos.estadoServicio.descripcionNoDisponible;
         return (
           <div style={{ textAlign: estilosModal.bodyTextAlign }}>
-            <h3 style={{ color: temaGlobal.exito }}>
-              {cerebroFront.textos.estadoServicio.operativo}
+            <h3
+              style={{
+                color: statusColor,
+                fontSize: "1.5rem",
+                marginBottom: "1rem",
+              }}
+            >
+              {statusText}
             </h3>
-            <p>{cerebroFront.textos.estadoServicio.rendimiento}</p>
-            <p>
-              <small>{cerebroFront.textos.estadoServicio.ultimaRevision}</small>
+            <p>{statusDesc}</p>
+            <p style={{ marginTop: "1rem" }}>
+              <small>
+                Última verificación:{" "}
+                {new Date(estadoServicio.timestamp).toLocaleString()}
+              </small>
             </p>
-            <p>{cerebroFront.textos.estadoServicio.incidentesRecientes}</p>
-            <p>{cerebroFront.textos.estadoServicio.mantenimientoProgramado}</p>
           </div>
         );
 

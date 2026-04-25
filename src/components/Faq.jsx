@@ -146,6 +146,8 @@ const Faq = () => {
                         ? estilos.iconTransformOpen
                         : estilos.iconTransformClosed,
                       color: temaActivo.primario,
+                      flexShrink: estilos.iconFlexShrink,
+                      minWidth: estilos.iconMinWidth,
                     }}
                   />
                 </button>

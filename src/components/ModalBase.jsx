@@ -7,7 +7,9 @@ import { cerebroFront, getTemaActivo } from "../config/cerebroFront";
 const ModalBase = ({ isOpen, onClose, titulo, children }) => {
   const temaGlobal = getTemaActivo();
   const estilos = cerebroFront.estilos.modal;
-  const [temaModal, setTemaModal] = useState(temaGlobal.fondo === "#FFFFFF" ? "claro" : "oscuro");
+  const [temaModal, setTemaModal] = useState(
+    temaGlobal.fondo === "#FFFFFF" ? "claro" : "oscuro",
+  );
 
   const coloresModal = cerebroFront.tema[temaModal];
 
@@ -82,16 +84,26 @@ const ModalBase = ({ isOpen, onClose, titulo, children }) => {
               >
                 {titulo}
               </h2>
-              <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
+              <div
+                style={{ display: "flex", gap: "1rem", alignItems: "center" }}
+              >
                 <span
                   onClick={toggleTemaModal}
-                  style={{ fontSize: estilos.toggleIconSize, cursor: estilos.toggleCursor, color: coloresModal.texto }}
+                  style={{
+                    fontSize: estilos.toggleIconSize,
+                    cursor: estilos.toggleCursor,
+                    color: coloresModal.texto,
+                  }}
                 >
                   {temaModal === "claro" ? <FaMoon /> : <FaSun />}
                 </span>
                 <span
                   onClick={onClose}
-                  style={{ fontSize: estilos.toggleIconSize, cursor: estilos.toggleCursor, color: coloresModal.texto }}
+                  style={{
+                    fontSize: estilos.toggleIconSize,
+                    cursor: estilos.toggleCursor,
+                    color: coloresModal.texto,
+                  }}
                 >
                   <FaTimes />
                 </span>
@@ -107,7 +119,7 @@ const ModalBase = ({ isOpen, onClose, titulo, children }) => {
                 color: coloresModal.texto,
               }}
             >
-              {children}
+              {React.cloneElement(children, { temaModal: coloresModal })}
             </div>
 
             {/* Footer */}
