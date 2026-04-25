@@ -9,6 +9,10 @@ import PagoConsumo from "./PagoConsumo";
 const Planes = () => {
   const temaActivo = getTemaActivo();
   const [periodo, setPeriodo] = useState("mensual");
+  const handleSelectPlan = (planKey) => {
+    localStorage.setItem("planSeleccionado", planKey);
+    window.location.href = "/registro";
+  };
   const [modalPagoConsumo, setModalPagoConsumo] = useState(false);
   const planesData = cerebroFront.planes;
   const estilos = cerebroFront.estilos.planes;
@@ -348,6 +352,7 @@ const Planes = () => {
                   </li>
                 </ul>
                 <motion.button
+                  onClick={() => handleSelectPlan(planKey)}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   style={{

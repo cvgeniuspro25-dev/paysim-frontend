@@ -31,6 +31,11 @@ const Navbar = () => {
     setMobileOpen(false);
   };
 
+  const handleRegistrarse = () => {
+    localStorage.setItem("planSeleccionado", "free");
+    window.location.href = "/registro";
+  };
+
   return (
     <motion.nav
       initial={{ y: estilos.motionInitialY }}
@@ -119,8 +124,11 @@ const Navbar = () => {
           className="desktop-nav"
         >
           <motion.button
-            whileHover={{ scale: estilos.buttonScaleHover }}
-            whileTap={{ scale: estilos.buttonScaleTap }}
+            onClick={() => {
+              window.location.href = "/login";
+            }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             style={{
               padding: estilos.buttonPadding,
               borderRadius: estilos.buttonBorderRadius,
@@ -128,33 +136,33 @@ const Navbar = () => {
               backgroundColor: estilos.buttonBackgroundTransparent,
               color: temaActivo.primario,
               fontWeight: estilos.buttonFontWeight,
-              cursor: estilos.buttonCursor,
-              transition: estilos.transitionAll,
+              cursor: "pointer",
+              transition: estilos.transition,
             }}
             onMouseEnter={(e) => {
               e.target.style.backgroundColor = temaActivo.primario;
               e.target.style.color = temaActivo.textoInverso;
             }}
             onMouseLeave={(e) => {
-              e.target.style.backgroundColor =
-                estilos.buttonBackgroundTransparent;
+              e.target.style.backgroundColor = "transparent";
               e.target.style.color = temaActivo.primario;
             }}
           >
             {textos.botones.ingresar}
           </motion.button>
           <motion.button
-            whileHover={{ scale: estilos.buttonScaleHover }}
-            whileTap={{ scale: estilos.buttonScaleTap }}
+            onClick={handleRegistrarse}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             style={{
               padding: estilos.buttonPadding,
               borderRadius: estilos.buttonBorderRadius,
-              border: estilos.buttonBorder,
+              border: "none",
               backgroundColor: temaActivo.secundario,
               color: temaActivo.textoInverso,
               fontWeight: estilos.buttonFontWeight,
-              cursor: estilos.buttonCursor,
-              transition: estilos.transitionAll,
+              cursor: "pointer",
+              transition: estilos.transition,
             }}
           >
             {textos.botones.registrarse}
@@ -230,12 +238,15 @@ const Navbar = () => {
             }}
           >
             <button
+              onClick={() => {
+                window.location.href = "/login";
+              }}
               style={{
-                flex: estilos.flexOne,
+                flex: 1,
                 padding: estilos.mobileButtonPadding,
                 borderRadius: estilos.buttonBorderRadius,
                 border: estilos.buttonBorder,
-                backgroundColor: estilos.buttonBackgroundTransparent,
+                backgroundColor: "transparent",
                 color: temaActivo.primario,
                 fontWeight: estilos.buttonFontWeight,
               }}
@@ -243,11 +254,12 @@ const Navbar = () => {
               {textos.botones.ingresar}
             </button>
             <button
+              onClick={handleRegistrarse}
               style={{
-                flex: estilos.flexOne,
+                flex: 1,
                 padding: estilos.mobileButtonPadding,
                 borderRadius: estilos.buttonBorderRadius,
-                border: estilos.buttonBorder,
+                border: "none",
                 backgroundColor: temaActivo.secundario,
                 color: temaActivo.textoInverso,
                 fontWeight: estilos.buttonFontWeight,

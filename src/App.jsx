@@ -9,11 +9,14 @@ import InfoModos from "./components/InfoModos";
 import Testimonios from "./components/Testimonios";
 import Faq from "./components/Faq";
 import Footer from "./components/Footer";
+import Registro from "./pages/Registro";
+import Login from "./pages/Login";
 import { cerebroFront, getTemaActivo } from "./config/cerebroFront";
 
 function App() {
   const temaActivo = getTemaActivo();
   const estilos = cerebroFront.estilos.global;
+  const path = window.location.pathname;
 
   return (
     <>
@@ -36,29 +39,35 @@ function App() {
         }
       `}</style>
 
-      <div
-        style={{
-          backgroundColor: temaActivo.fondo,
-          color: temaActivo.texto,
-          minHeight: estilos.appContainerMinHeight,
-          fontFamily: estilos.appContainerFontFamily,
-          margin: estilos.appContainerMargin,
-          padding: estilos.appContainerPadding,
-          border: estilos.appContainerBorder,
-          outline: estilos.appContainerOutline,
-          boxShadow: estilos.appContainerBoxShadow,
-        }}
-      >
-        <Navbar />
-        <Hero />
-        <Funcionalidades />
-        <Timeline />
-        <Planes />
-        <InfoModos />
-        <Testimonios />
-        <Faq />
-        <Footer />
-      </div>
+      {path === "/registro" ? (
+        <Registro />
+      ) : path === "/login" ? (
+        <Login />
+      ) : (
+        <div
+          style={{
+            backgroundColor: temaActivo.fondo,
+            color: temaActivo.texto,
+            minHeight: estilos.appContainerMinHeight,
+            fontFamily: estilos.appContainerFontFamily,
+            margin: estilos.appContainerMargin,
+            padding: estilos.appContainerPadding,
+            border: estilos.appContainerBorder,
+            outline: estilos.appContainerOutline,
+            boxShadow: estilos.appContainerBoxShadow,
+          }}
+        >
+          <Navbar />
+          <Hero />
+          <Funcionalidades />
+          <Timeline />
+          <Planes />
+          <InfoModos />
+          <Testimonios />
+          <Faq />
+          <Footer />
+        </div>
+      )}
     </>
   );
 }

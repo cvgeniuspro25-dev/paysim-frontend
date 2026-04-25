@@ -239,8 +239,10 @@ const PagoConsumo = ({ onClose, onSelectPlan, temaModal }) => {
           whileTap={{ scale: 0.98 }}
           onClick={() => {
             localStorage.setItem("planSeleccionado", "payAsYouGo");
-            if (onSelectPlan) onSelectPlan();
-            onClose();
+            // Pequeña pausa para asegurar la escritura antes de redirigir
+            setTimeout(() => {
+              window.location.href = "/registro";
+            }, 50);
           }}
           style={{
             padding: "0.6rem 1.5rem",

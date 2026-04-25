@@ -1,12 +1,19 @@
 // frontend/src/components/Hero.jsx
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { cerebroFront, getTemaActivo } from "../config/cerebroFront";
+import ModalDemo from "./ModalDemo";
+import VerDemo from "./VerDemo";
 
 const Hero = () => {
   const temaActivo = getTemaActivo();
   const estilos = cerebroFront.estilos.hero;
+  const handleComenzarGratis = () => {
+    localStorage.setItem("planSeleccionado", "free");
+    window.location.href = "/registro";
+  };
   const textos = cerebroFront.textos.hero;
+  const [modalDemo, setModalDemo] = useState(false);
 
   return (
     <section
@@ -117,6 +124,7 @@ const Hero = () => {
             }}
           >
             <motion.button
+              onClick={handleComenzarGratis}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               style={{
@@ -138,6 +146,7 @@ const Hero = () => {
               {cerebroFront.textos.botones.comenzarGratis}
             </motion.button>
             <motion.button
+              onClick={() => setModalDemo(true)}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               style={{
@@ -308,6 +317,15 @@ const Hero = () => {
           </motion.div>
         </motion.div>
       </div>
+      {modalDemo && (
+        <ModalDemo
+          isOpen={modalDemo}
+          onClose={() => setModalDemo(false)}
+          titulo={cerebroFront.textos.verDemo.titulo}
+        >
+          <VerDemo />
+        </ModalDemo>
+      )}
     </section>
   );
 };
