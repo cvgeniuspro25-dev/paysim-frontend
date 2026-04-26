@@ -24,6 +24,8 @@ import {
   FaEye,
   FaRegEnvelope,
   FaEnvelopeOpenText,
+  FaBars,
+  FaTimes,
 } from "react-icons/fa";
 import { cerebroFront } from "../config/cerebroFront";
 
@@ -33,6 +35,7 @@ const DemoPanel = () => {
   const [seccion, setSeccion] = useState("dashboard");
   const [particulas, setParticulas] = useState([]);
   const [tarjetaHover, setTarjetaHover] = useState(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     if (particulas.length > 0) {
@@ -298,22 +301,24 @@ const DemoPanel = () => {
   return (
     <div
       style={{
-        display: estilos.contenedorDisplay,
-        height: estilos.contenedorHeight,
+        display: "flex",
+        flexDirection: "column",
+        height: "95vh",
         color: "#ffffff",
         fontFamily: "'Inter', sans-serif",
       }}
     >
-      {/* Sidebar */}
+      {/* Topbar para mobile */}
       <div
+        className="demo-topbar"
         style={{
-          width: estilos.sidebarWidth,
-          background: estilos.sidebarBackground,
-          padding: estilos.sidebarPadding,
-          borderRight: estilos.sidebarBorderRight,
-          display: "flex",
-          flexDirection: "column",
-          flexShrink: 0,
+          position: "relative",
+          display: estilos.mobileTopBarDisplay,
+          background: estilos.mobileTopBarBackground,
+          padding: estilos.mobileTopBarPadding,
+          borderBottom: estilos.mobileTopBarBorderBottom,
+          alignItems: "center",
+          justifyContent: "space-between",
         }}
       >
         <div
@@ -321,65 +326,156 @@ const DemoPanel = () => {
             fontSize: estilos.sidebarLogoFontSize,
             fontWeight: estilos.sidebarLogoFontWeight,
             color: estilos.sidebarLogoColor,
-            marginBottom: estilos.sidebarLogoMarginBottom,
-            paddingLeft: estilos.sidebarLogoPaddingLeft,
           }}
         >
           PaySim
         </div>
-        {menuItems.map((item) => (
+        <div
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          style={{
+            color: estilos.mobileHamburguesaColor,
+            fontSize: estilos.mobileHamburguesaSize,
+            cursor: estilos.mobileHamburguesaCursor,
+          }}
+        >
+          {mobileMenuOpen ? <FaTimes /> : <FaBars />}
+        </div>
+        {mobileMenuOpen && (
           <div
-            key={item.id}
-            onClick={() => setSeccion(item.id)}
-            className={item.id === "billetera" ? "sidebar-item-billetera" : ""}
+            className="demo-mobile-menu"
             style={{
-              padding: estilos.sidebarItemPadding,
-              fontSize: estilos.sidebarItemFontSize,
-              color:
-                seccion === item.id
-                  ? estilos.sidebarItemColorActivo
-                  : estilos.sidebarItemColor,
-              background:
-                seccion === item.id
-                  ? estilos.sidebarItemBackgroundActivo
-                  : "transparent",
-              borderLeft:
-                seccion === item.id
-                  ? estilos.sidebarItemBorderLeftActivo
-                  : estilos.sidebarItemBorderLeft,
-              display: "flex",
-              alignItems: "center",
-              gap: estilos.sidebarItemGap,
-              cursor: estilos.sidebarItemCursor,
-              transition: estilos.sidebarItemTransition,
+              background: estilos.mobileMenuDropdownBackground,
+              position: estilos.mobileMenuDropdownPosition,
+              top: estilos.mobileMenuDropdownTop,
+              left: estilos.mobileMenuDropdownLeft,
+              right: estilos.mobileMenuDropdownRight,
+              zIndex: estilos.mobileMenuDropdownZIndex,
+              padding: estilos.mobileMenuDropdownPadding,
+              borderBottom: estilos.mobileMenuDropdownBorderBottom,
             }}
           >
-            <item.icon style={{ fontSize: estilos.sidebarIconSize }} />
-            {item.label}
+            {menuItems.map((item) => (
+              <div
+                key={item.id}
+                onClick={() => {
+                  setSeccion(item.id);
+                  setMobileMenuOpen(false);
+                }}
+                style={{
+                  padding: estilos.sidebarItemPadding,
+                  fontSize: estilos.sidebarItemFontSize,
+                  color:
+                    seccion === item.id
+                      ? estilos.sidebarItemColorActivo
+                      : estilos.sidebarItemColor,
+                  background:
+                    seccion === item.id
+                      ? estilos.sidebarItemBackgroundActivo
+                      : "transparent",
+                  borderLeft:
+                    seccion === item.id
+                      ? estilos.sidebarItemBorderLeftActivo
+                      : estilos.sidebarItemBorderLeft,
+                  display: "flex",
+                  alignItems: "center",
+                  gap: estilos.sidebarItemGap,
+                  cursor: estilos.sidebarItemCursor,
+                  transition: estilos.sidebarItemTransition,
+                }}
+              >
+                <item.icon style={{ fontSize: estilos.sidebarIconSize }} />
+                {item.label}
+              </div>
+            ))}
           </div>
-        ))}
+        )}
       </div>
-
-      {/* Contenido principal */}
       <div
-        style={{
-          flex: estilos.mainFlex,
-          padding: estilos.mainPadding,
-          overflowY: estilos.mainOverflowY,
-          background: "#0f0f1a",
-        }}
+        style={{ display: "flex", flex: 1, overflow: "hidden", minHeight: 0 }}
       >
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={seccion}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            transition={{ duration: 0.25 }}
+        {/* Sidebar para desktop */}
+        <div
+          className="demo-sidebar"
+          style={{
+            width: estilos.sidebarWidth,
+            background: estilos.sidebarBackground,
+            padding: estilos.sidebarPadding,
+            borderRight: estilos.sidebarBorderRight,
+            display: "flex",
+            flexDirection: "column",
+            flexShrink: 0,
+          }}
+        >
+          <div
+            style={{
+              fontSize: estilos.sidebarLogoFontSize,
+              fontWeight: estilos.sidebarLogoFontWeight,
+              color: estilos.sidebarLogoColor,
+              marginBottom: estilos.sidebarLogoMarginBottom,
+              paddingLeft: estilos.sidebarLogoPaddingLeft,
+            }}
           >
-            {renderSeccion()}
-          </motion.div>
-        </AnimatePresence>
+            PaySim
+          </div>
+          {menuItems.map((item) => (
+            <div
+              key={item.id}
+              onClick={() => setSeccion(item.id)}
+              className={
+                item.id === "billetera" ? "sidebar-item-billetera" : ""
+              }
+              style={{
+                padding: estilos.sidebarItemPadding,
+                fontSize: estilos.sidebarItemFontSize,
+                color:
+                  seccion === item.id
+                    ? estilos.sidebarItemColorActivo
+                    : estilos.sidebarItemColor,
+                background:
+                  seccion === item.id
+                    ? estilos.sidebarItemBackgroundActivo
+                    : "transparent",
+                borderLeft:
+                  seccion === item.id
+                    ? estilos.sidebarItemBorderLeftActivo
+                    : estilos.sidebarItemBorderLeft,
+                display: "flex",
+                alignItems: "center",
+                gap: estilos.sidebarItemGap,
+                cursor: estilos.sidebarItemCursor,
+                transition: estilos.sidebarItemTransition,
+              }}
+            >
+              <item.icon style={{ fontSize: estilos.sidebarIconSize }} />
+              {item.label}
+            </div>
+          ))}
+        </div>
+
+        {/* Contenido principal */}
+        <div
+          style={{
+            flex: estilos.mainFlex,
+            padding: estilos.mainPadding,
+            overflowY: "auto",
+            overflowX: "hidden",
+            WebkitOverflowScrolling: "touch",
+            background: "#0f0f1a",
+            minHeight: 0,
+          }}
+        >
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={seccion}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.25 }}
+            >
+              {renderSeccion()}
+            </motion.div>
+          </AnimatePresence>
+        </div>
       </div>
 
       {/* Partículas de tokens */}
@@ -401,6 +497,22 @@ const DemoPanel = () => {
           }}
         />
       ))}
+
+      {/* Estilos CSS para responsive */}
+      <style jsx="true">{`
+        @media (max-width: ${estilos.mobileSidebarBreakpoint}) {
+          .demo-sidebar {
+            display: none !important;
+          }
+          .demo-topbar {
+            display: flex !important;
+          }
+        }
+        select option {
+          background-color: #0f0f1a;
+          color: #ffffff;
+        }
+      `}</style>
     </div>
   );
 };
