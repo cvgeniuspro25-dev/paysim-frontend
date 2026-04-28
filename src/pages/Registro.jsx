@@ -85,7 +85,7 @@ const Registro = () => {
     setUsernameStatus("checking");
     try {
       const resp = await fetch(
-        `${cerebroFront.urls.backendLocal}/api/auth/check-username`,
+        `${cerebroFront.getBackendUrl()}/api/auth/check-username`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -112,7 +112,7 @@ const Registro = () => {
     setDniStatus("checking");
     try {
       const resp = await fetch(
-        `${cerebroFront.urls.backendLocal}/api/auth/check-dni`,
+        `${cerebroFront.getBackendUrl()}/api/auth/check-dni`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -236,7 +236,7 @@ const Registro = () => {
 
     try {
       const resp = await fetch(
-        `${cerebroFront.urls.backendLocal}/api/auth/register`,
+        `${cerebroFront.getBackendUrl()}/api/auth/register`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

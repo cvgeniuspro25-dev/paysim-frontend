@@ -30,7 +30,7 @@ const PagoCancelado = () => {
   useEffect(() => {
     if ((esRobadaOPerdida || esLimiteExcedido) && token && !invalidando) {
       setInvalidando(true);
-      fetch(`${cerebroFront.urls.backendLocal}/api/auth/invalidar-token`, {
+      fetch(`${cerebroFront.getBackendUrl()}/api/auth/invalidar-token`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token }),

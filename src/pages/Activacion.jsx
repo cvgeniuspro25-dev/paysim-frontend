@@ -21,7 +21,7 @@ const Activacion = () => {
     const verificarToken = async () => {
       try {
         const resp = await fetch(
-          `${cerebroFront.urls.backendLocal}/api/auth/activar/${token}`,
+          `${cerebroFront.getBackendUrl()}/api/auth/activar/${token}`,
         );
         const data = await resp.json();
 

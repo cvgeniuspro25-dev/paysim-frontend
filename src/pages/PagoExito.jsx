@@ -27,7 +27,7 @@ const PagoExito = () => {
     const confirmar = async () => {
       try {
         const resp = await fetch(
-          `${cerebroFront.urls.backendLocal}/api/auth/confirmar-pago`,
+          `${cerebroFront.getBackendUrl()}/api/auth/confirmar-pago`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },

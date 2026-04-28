@@ -139,8 +139,21 @@ export const cerebroFront = {
   },
   urls: {
     backendLocal: "http://192.168.10.12:5000",
-    backendProduccion: "https://paysim-backend-production.up.railway.app",
+    backendProduccion: "https://paysim-backend-hgej.onrender.com",
     frontendLocal: "http://192.168.10.12:5180",
+  },
+
+  // Función para obtener la URL del backend según el entorno
+  getBackendUrl: () => {
+    if (typeof window !== "undefined") {
+      const hostname = window.location.hostname;
+      // Si es localhost o una IP local, usar backend local
+      if (hostname === "localhost" || hostname.startsWith("192.168.")) {
+        return "http://192.168.10.12:5000";
+      }
+    }
+    // En producción (Vercel, etc.) usar la URL de Render
+    return "https://paysim-backend-hgej.onrender.com";
   },
 
   // ==========================================
