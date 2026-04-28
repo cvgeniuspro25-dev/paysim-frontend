@@ -18,6 +18,7 @@ import {
   FaTimes,
   FaArrowLeft,
 } from "react-icons/fa";
+import ModalBase from "../components/ModalBase";
 import { cerebroFront, getTemaActivo } from "../config/cerebroFront";
 
 const Registro = () => {
@@ -63,6 +64,10 @@ const Registro = () => {
   const [enviando, setEnviando] = useState(false);
   const [exito, setExito] = useState(false);
   const [errorModal, setErrorModal] = useState(null);
+  const [modalLegal, setModalLegal] = useState(null); // null | 'privacidad' | 'condiciones'
+
+  const abrirModalLegal = (tipo) => setModalLegal(tipo);
+  const cerrarModalLegal = () => setModalLegal(null);
 
   // Efecto: validar si hay plan al montar
   useEffect(() => {
@@ -590,6 +595,19 @@ const Registro = () => {
               )}
             </button>
           </div>
+          {!tipoCuenta && (
+            <div
+              style={{
+                color: tema.error,
+                fontSize: "0.8rem",
+                marginTop: "-0.5rem",
+                marginBottom: "0.8rem",
+                textAlign: "center",
+              }}
+            >
+              {textos.tipoCuentaObligatorio}
+            </div>
+          )}
 
           {/* Grid de campos responsivo */}
           <div
@@ -637,20 +655,25 @@ const Registro = () => {
               obligatorio
               tema={tema}
               estilos={estilos}
+              error={
+                username.length > 0 && username.length < 6
+                  ? "Mínimo 6 caracteres"
+                  : null
+              }
               validacion={
-                usernameStatus === "checking"
+                username.length >= 6 && usernameStatus === "checking"
                   ? {
                       tipo: "checking",
                       texto: textos.usernameVerificando,
                       color: tema.info,
                     }
-                  : usernameStatus === "available"
+                  : username.length >= 6 && usernameStatus === "available"
                     ? {
                         tipo: "valido",
                         texto: textos.usernameDisponible,
                         color: tema.exito,
                       }
-                    : usernameStatus === "taken"
+                    : username.length >= 6 && usernameStatus === "taken"
                       ? {
                           tipo: "error",
                           texto: textos.usernameNoDisponible,
@@ -739,6 +762,11 @@ const Registro = () => {
                   obligatorio
                   tema={tema}
                   estilos={estilos}
+                  error={
+                    password.length > 0 && fortaleza <= 2
+                      ? "La contraseña es demasiado débil"
+                      : null
+                  }
                 />
                 <span
                   onClick={() => setMostrarPassword(!mostrarPassword)}
@@ -844,20 +872,22 @@ const Registro = () => {
             <span style={{ fontSize: "0.85rem", color: tema.texto }}>
               {textos.terminosTexto}{" "}
               <span
+                onClick={() => abrirModalLegal("condiciones")}
                 style={{
-                  color: tema.primario,
+                  color: estilos.terminosLinkColor,
                   cursor: "pointer",
-                  textDecoration: "underline",
+                  textDecoration: estilos.terminosLinkTextDecoration,
                 }}
               >
                 {textos.terminosLink}
               </span>{" "}
               {textos.y}{" "}
               <span
+                onClick={() => abrirModalLegal("privacidad")}
                 style={{
-                  color: tema.primario,
+                  color: estilos.terminosLinkColor,
                   cursor: "pointer",
-                  textDecoration: "underline",
+                  textDecoration: estilos.terminosLinkTextDecoration,
                 }}
               >
                 {textos.privacidadLink}
@@ -1016,6 +1046,35 @@ const Registro = () => {
         </motion.div>
       )}
       <style>{`@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }`}</style>
+            {/* Modales legales */}
+      {modalLegal && (
+        <ModalBase
+          isOpen={!!modalLegal}
+          onClose={cerrarModalLegal}
+          titulo={
+            modalLegal === "privacidad"
+              ? cerebroFront.textos.politicaPrivacidad.titulo
+              : cerebroFront.textos.condicionesServicio.titulo
+          }
+        >
+          <div>
+            {(modalLegal === "privacidad"
+              ? cerebroFront.textos.politicaPrivacidad.contenido
+              : cerebroFront.textos.condicionesServicio.contenido
+            ).map((p, i) => (
+              <p
+                key={i}
+                style={{
+                  marginBottom: "0.8rem",
+                  textAlign: "left",
+                }}
+              >
+                {p}
+              </p>
+            ))}
+          </div>
+        </ModalBase>
+      )}
     </div>
   );
 };

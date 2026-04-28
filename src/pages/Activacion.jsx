@@ -63,9 +63,15 @@ const Activacion = () => {
   }, [estado, navigate]);
 
   // Redirigir a PayM si requiere pago
+  const [mostrarRedirigiendo, setMostrarRedirigiendo] = useState(false);
+
   useEffect(() => {
     if (estado === "requierePago" && pasarelaUrl) {
-      window.location.href = pasarelaUrl;
+      setMostrarRedirigiendo(true);
+      const timer = setTimeout(() => {
+        window.location.href = pasarelaUrl;
+      }, 2500);
+      return () => clearTimeout(timer);
     }
   }, [estado, pasarelaUrl]);
 
@@ -95,6 +101,25 @@ const Activacion = () => {
         </>
       )}
 
+      {mostrarRedirigiendo && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          style={{ textAlign: "center" }}
+        >
+          <FaSpinner
+            style={{
+              fontSize: "2rem",
+              color: tema.primario,
+              animation: "spin 1s linear infinite",
+              marginBottom: "1rem",
+            }}
+          />
+          <p style={{ color: tema.texto }}>
+            Redirigiendo a la pasarela de pago...
+          </p>
+        </motion.div>
+      )}
       {estado === "exito" && (
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
