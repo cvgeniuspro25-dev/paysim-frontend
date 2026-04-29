@@ -647,7 +647,8 @@ const Registro = () => {
               tipo="text"
               value={username}
               onChange={(val) => {
-                setUsername(val);
+                const sinEspacios = val.replace(/\s/g, "");
+                setUsername(sinEspacios);
                 setUsernameStatus(null);
               }}
               label={textos.campoUsername}
@@ -1046,7 +1047,7 @@ const Registro = () => {
         </motion.div>
       )}
       <style>{`@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }`}</style>
-            {/* Modales legales */}
+      {/* Modales legales */}
       {modalLegal && (
         <ModalBase
           isOpen={!!modalLegal}
