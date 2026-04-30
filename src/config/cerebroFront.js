@@ -153,7 +153,7 @@ export const cerebroFront = {
       }
     }
     // En producción (Vercel, etc.) usar la URL de Render
-    return "https://paysim-backend-hgej.onrender.com";
+    return "https://pay-sim.alwaysdata.net";
   },
 
   // ==========================================
@@ -1531,7 +1531,7 @@ export const cerebroFront = {
       y: "y la",
       privacidadLink: "Política de Privacidad",
     },
-        login: {
+    login: {
       titulo: "Iniciar Sesión",
       subtitulo: "Ingresá con tu usuario y contraseña",
       tabUsuario: "Usuario",
@@ -1554,17 +1554,24 @@ export const cerebroFront = {
       errorServidor: "Error interno. Intentá de nuevo más tarde.",
       exitoLogin: "¡Inicio de sesión exitoso!",
       recordarUsuarioTitulo: "Recordar usuario",
-      recordarUsuarioMensaje: "Ingresá tu DNI para recibir tu nombre de usuario por email.",
-      recordarUsuarioExito: "Si el DNI coincide con una cuenta, recibirás un email con tu nombre de usuario.",
+      recordarUsuarioMensaje:
+        "Ingresá tu DNI para recibir tu nombre de usuario por email.",
+      recordarUsuarioExito:
+        "Si el DNI coincide con una cuenta, recibirás un email con tu nombre de usuario.",
       recuperarContrasenaTitulo: "Recuperar contraseña",
-      recuperarContrasenaMensaje: "Ingresá tu nombre de usuario. Te enviaremos un enlace para cambiar tu contraseña.",
-      recuperarContrasenaExito: "Si la cuenta existe, recibirás un email con instrucciones.",
+      recuperarContrasenaMensaje:
+        "Ingresá tu nombre de usuario. Te enviaremos un enlace para cambiar tu contraseña.",
+      recuperarContrasenaExito:
+        "Si la cuenta existe, recibirás un email con instrucciones.",
       cambiarContrasenaTitulo: "Cambiar contraseña",
       cambiarContrasenaMensaje: "Ingresá tu nueva contraseña.",
-      cambiarContrasenaExito: "Contraseña cambiada correctamente. Ya podés iniciar sesión.",
+      cambiarContrasenaExito:
+        "Contraseña cambiada correctamente. Ya podés iniciar sesión.",
       reenviarActivacionTitulo: "Reenviar email de activación",
-      reenviarActivacionMensaje: "Ingresá tu usuario y DNI. Si la cuenta no está activada, te enviaremos un nuevo email.",
-      reenviarActivacionExito: "Si la cuenta no está activada, recibirás un nuevo email de activación.",
+      reenviarActivacionMensaje:
+        "Ingresá tu usuario y DNI. Si la cuenta no está activada, te enviaremos un nuevo email.",
+      reenviarActivacionExito:
+        "Si la cuenta no está activada, recibirás un nuevo email de activación.",
       reenviarActivacionError: "La cuenta ya está activada.",
       campoDni: "DNI",
       placeholderDni: "DNI",
