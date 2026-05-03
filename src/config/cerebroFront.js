@@ -1476,6 +1476,23 @@ export const cerebroFront = {
       botonVerDemo: "Ver Demo",
       placeholderBuscar: "Buscar...",
     },
+    panelAdmin: {
+      menu: {
+        inicio: "Inicio",
+        perfil: "Mi Perfil",
+        usuarios: "Usuarios",
+        finanzas: "Finanzas",
+        promociones: "Promociones",
+        empleados: "Empleados",
+      },
+      sidebar: {
+        rango: "Super Admin",
+        cerrarSesion: "Cerrar Sesión",
+      },
+      contenido: {
+        enDesarrollo: "Módulo en desarrollo...",
+      },
+    },
     registro: {
       titulo: "Crear cuenta",
       subtitulo: "Completá tus datos para empezar",

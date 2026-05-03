@@ -229,8 +229,16 @@ const Login = () => {
 
   React.useEffect(() => {
     if (exitoLogin) {
-      const timer = setTimeout(() => navigate("/"), 2000);
-      return () => clearTimeout(timer);
+      try {
+        const usuario = JSON.parse(localStorage.getItem("usuario") || "{}");
+        const esAdmin = usuario && usuario.rol === "admin";
+        const destino = esAdmin ? "/admin" : "/";
+        const timer = setTimeout(() => navigate(destino), 2000);
+        return () => clearTimeout(timer);
+      } catch {
+        const timer = setTimeout(() => navigate("/"), 2000);
+        return () => clearTimeout(timer);
+      }
     }
   }, [exitoLogin, navigate]);
 

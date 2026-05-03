@@ -16,6 +16,7 @@ import Login from "./pages/Login";
 import PagoExito from "./pages/PagoExito";
 import PagoCancelado from "./pages/PagoCancelado";
 import CambiarContrasena from "./pages/CambiarContrasena";
+import PanelAdmin from "./pages/admin/PanelAdmin";
 import { cerebroFront, getTemaActivo } from "./config/cerebroFront";
 
 // Componente LandingPage con efecto de scroll al hash
@@ -90,6 +91,7 @@ function App() {
       <Routes>
         <Route path="/registro" element={<Registro />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/admin/*" element={<PanelAdmin />} />
         <Route path="/activar/:token" element={<Activacion />} />
         <Route path="/pago-exito" element={<PagoExito />} />
         <Route path="/pago-cancelado" element={<PagoCancelado />} />
