@@ -13,10 +13,13 @@ import {
   FaBars,
   FaTimes,
 } from "react-icons/fa";
+import MiPerfil from "./modulos/MiPerfil";
 import { cerebroFront, getTemaActivo } from "../../config/cerebroFront";
 
 // Placeholder: los módulos se importarán dinámicamente según la sección activa
-const modulosAdmin = {};
+const modulosAdmin = {
+  perfil: MiPerfil,
+};
 
 const PanelAdmin = () => {
   const tema = getTemaActivo();
@@ -32,11 +35,11 @@ const PanelAdmin = () => {
   }, []);
 
   // Datos del admin (mock inicial, luego vendrán del backend)
-  const admin = {
+  const [admin, setAdmin] = useState({
     nombre: "Administrador",
-    rango: "Super Admin",
+    rango: cerebroFront.textos.panelAdmin.sidebar.rango || "Super Admin",
     foto: null,
-  };
+  });
 
   // Secciones del menú definidas en el Cerebro (próximo paso)
   const textosPanel = cerebroFront.textos.panelAdmin;
@@ -62,7 +65,22 @@ const PanelAdmin = () => {
     const usuario = JSON.parse(localStorage.getItem("usuario") || "{}");
     if (!token || usuario.rol !== "admin") {
       navigate("/login");
+      return;
     }
+    // Cargar foto de perfil del admin
+    fetch(`${cerebroFront.getBackendUrl()}/api/admin/perfil`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((resp) => resp.json())
+      .then((data) => {
+        if (data.foto_perfil) {
+          setAdmin((prev) => ({ ...prev, foto: data.foto_perfil }));
+        }
+        if (data.nombre) {
+          setAdmin((prev) => ({ ...prev, nombre: data.nombre }));
+        }
+      })
+      .catch(() => {});
   }, [navigate]);
 
   const cerrarSesion = () => {
