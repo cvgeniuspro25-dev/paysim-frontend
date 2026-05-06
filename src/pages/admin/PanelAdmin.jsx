@@ -12,13 +12,18 @@ import {
   FaUserTie,
   FaBars,
   FaTimes,
+  FaMoneyBillWave,
 } from "react-icons/fa";
 import MiPerfil from "./modulos/MiPerfil";
+import Usuarios from "./modulos/Usuarios";
+import Fondo from "./modulos/Fondo";
 import { cerebroFront, getTemaActivo } from "../../config/cerebroFront";
 
 // Placeholder: los módulos se importarán dinámicamente según la sección activa
 const modulosAdmin = {
   perfil: MiPerfil,
+  usuarios: Usuarios,
+  fondo: Fondo,
 };
 
 const PanelAdmin = () => {
@@ -48,6 +53,7 @@ const PanelAdmin = () => {
     { id: "perfil", label: textosPanel.menu.perfil, Icono: FaUser },
     { id: "usuarios", label: textosPanel.menu.usuarios, Icono: FaUsers },
     { id: "finanzas", label: textosPanel.menu.finanzas, Icono: FaChartBar },
+    { id: "fondo", label: textosPanel.menu.fondo, Icono: FaMoneyBillWave },
     { id: "promociones", label: textosPanel.menu.promociones, Icono: FaTag },
     { id: "empleados", label: textosPanel.menu.empleados, Icono: FaUserTie },
   ];
