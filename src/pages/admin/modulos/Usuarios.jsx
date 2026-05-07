@@ -77,6 +77,7 @@ const Usuarios = () => {
           fontSize: "1.5rem",
           fontWeight: "bold",
           marginBottom: "1.5rem",
+          color: tema.texto,
         }}
       >
         {textos.titulo || "Usuarios"}

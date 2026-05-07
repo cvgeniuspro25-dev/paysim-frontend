@@ -340,7 +340,14 @@ const MiPerfil = () => {
             marginBottom: "2rem",
           }}
         >
-          <h2 style={{ fontSize: "1.5rem", fontWeight: "bold", margin: 0 }}>
+          <h2
+            style={{
+              fontSize: "1.5rem",
+              fontWeight: "bold",
+              margin: 0,
+              color: tema.texto,
+            }}
+          >
             {textosPanel.titulo || "Mi Perfil"}
           </h2>
           {!editando ? (
